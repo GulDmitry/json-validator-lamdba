@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Import docker env variables.
+source $DIR/../../.env
+
+cd $DIR/../../ # Force phpstorm to sit in project's root dir.
+
+PROJECT_FOLDER="$(cd `dirname $0`/../../ && basename `pwd`)"
+# Docker network, see "docker network ls".
+if [ -z "$NETWORK" ]
+then
+    NETWORK_NAME="$(echo $PROJECT_FOLDER)"_base_net
+else
+    NETWORK_NAME=$NETWORK
+fi
+
+docker run -i --rm --net=host --sig-proxy=true --pid=host \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v ${PWD}:${PWD} \
+-v /tmp/:/tmp/ \
+-v $HOME:$HOME \
+-v ${COMPOSER_CACHE}:/.composer/cache \
+-w ${PWD} \
+--network ${NETWORK_NAME} \
+--user ${uid}:${gid} \
+jsonvalidator_php php -d include_path=vendor/phpunit/phpunit "$@"

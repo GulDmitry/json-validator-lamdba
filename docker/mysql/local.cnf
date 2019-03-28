@@ -1,0 +1,22 @@
+[mysqld]
+# 70-80% RAM
+innodb_buffer_pool_size=1000M
+innodb_thread_concurrency=8
+innodb_lock_wait_timeout=50
+innodb_log_buffer_size=8M
+innodb_flush_log_at_trx_commit=0
+max_connections = 300
+max_allowed_packet=256M
+# Skip reverse DNS lookup of clients
+skip-name-resolve
+
+[client]
+default-character-set=utf8
+
+[mysql]
+default-character-set=utf8
+
+[mysqld]
+collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
