@@ -21,3 +21,6 @@
 
 ### IDE
 .idea
+
+### Lambda deploy
+.stack.yaml
